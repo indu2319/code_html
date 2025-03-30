@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bundle & Save</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #0e8571;
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: normal;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        .box {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fff;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .box.selected {
+            border: 2px solid #0e8571;
+            background-color: #f0f9f7;
+        }
+        
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .box-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-container {
+            margin-right: 15px;
+        }
+        
+        input[type="radio"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            outline: none;
+            transition: 0.2s all linear;
+            margin-right: 5px;
+            position: relative;
+            top: 2px;
+        }
+        
+        input[type="radio"]:checked {
+            border: 5px solid #0e8571;
+        }
+        
+        .bundle-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .bundle-price {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .discount-tag {
+            color: #0e8571;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        .original-price {
+            font-size: 12px;
+            color: #999;
+            text-decoration: line-through;
+            margin-right: 5px;
+        }
+        
+        .popular-tag {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            background-color: #0e8571;
+            color: white;
+            padding: 2px 8px;
+            font-size: 12px;
+            border-radius: 0 0 5px 5px;
+        }
+        
+        .content {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .selection-row {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+        
+        .item-number {
+            width: 30px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .selection-column {
+            flex: 1;
+            padding: 0 5px;
+        }
+        
+        .selection-label {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        
+        #shipping-text {
+            color: #0e8571;
+            text-align: left;
+            float: left;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        #total {
+            color: #333;
+            text-align: right;
+            float: right;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #0e8571;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 50px;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #0a6b5a;
+        }
+        
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Bundle & Save</h2>
+
+        <div class="box" id="box-1" onclick="selectBox(1)">
+            <div class="box-header">
+                <div class="box-left">
+                    <div class="radio-container">
+                        <input type="radio" id="bundle1" name="bundle" value="195" onclick="event.stopPropagation()">
+                    </div>
+                    <div>
+                        <span class="bundle-name">1 Pair</span>
+                        <br>
+                        <span class="bundle-price">DKK 195.00</span>
+                    </div>
+                </div>
+                <div class="box-right">
+                    <span class="discount-tag">50% OFF</span>
+                </div>
+            </div>
+            <div class="content" id="content-1">
+                <div class="selection-row">
+                    <div class="item-number">#1</div>
+                    <div class="selection-column">
+                        <label class="selection-label">Size</label>
+                        <select class="size-dropdown">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </select>
+                    </div>
+                    <div class="selection-column">
+                        <label class="selection-label">Colour</label>
+                        <select class="color-dropdown">
+                            <option value="colour">colour</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Black">Black</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box selected" id="box-2" onclick="selectBox(2)">
+            <div class="popular-tag">Most Popular</div>
+            <div class="box-header">
+                <div class="box-left">
+                    <div class="radio-container">
+                        <input type="radio" id="bundle2" name="bundle" value="345" checked onclick="event.stopPropagation()">
+                    </div>
+                    <div>
+                        <span class="bundle-name">2 Pair</span>
+                        <br>
+                        <span class="bundle-price">DKK 345.00</span>
+                        <span class="original-price">DKK 195.00</span>
+                    </div>
+                </div>
+                <div class="box-right">
+                    <span class="discount-tag">40% OFF</span>
+                </div>
+            </div>
+            <div class="content" id="content-2" style="display: block;">
+                <div class="selection-row">
+                    <div class="item-number">#1</div>
+                    <div class="selection-column">
+                        <label class="selection-label">Size</label>
+                        <select class="size-dropdown">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </select>
+                    </div>
+                    <div class="selection-column">
+                        <label class="selection-label">Colour</label>
+                        <select class="color-dropdown">
+                            <option value="colour">colour</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Black">Black</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="selection-row">
+                    <div class="item-number">#2</div>
+                    <div class="selection-column">
+                        <label class="selection-label">Size</label>
+                        <select class="size-dropdown">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </select>
+                    </div>
+                    <div class="selection-column">
+                        <label class="selection-label">Colour</label>
+                        <select class="color-dropdown">
+                            <option value="colour">colour</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Black">Black</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box" id="box-3" onclick="selectBox(3)">
+            <div class="box-header">
+                <div class="box-left">
+                    <div class="radio-container">
+                        <input type="radio" id="bundle3" name="bundle" value="528" onclick="event.stopPropagation()">
+                    </div>
+                    <div>
+                        <span class="bundle-name">3 Pair</span>
+                        <br>
+                        <span class="bundle-price">DKK 528.00</span>
+                    </div>
+                </div>
+                <div class="box-right">
+                    <span class="discount-tag">60% OFF</span>
+                </div>
+            </div>
+            <div class="content" id="content-3">
+                <div class="selection-row">
+                    <div class="item-number">#1</div>
+                    <div class="selection-column">
+                        <label class="selection-label">Size</label>
+                        <select class="size-dropdown">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </select>
+                    </div>
+                    <div class="selection-column">
+                        <label class="selection-label">Colour</label>
+                        <select class="color-dropdown">
+                            <option value="colour">colour</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Black">Black</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="selection-row">
+                    <div class="item-number">#2</div>
+                    <div class="selection-column">
+                        <label class="selection-label">Size</label>
+                        <select class="size-dropdown">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </select>
+                    </div>
+                    <div class="selection-column">
+                        <label class="selection-label">Colour</label>
+                        <select class="color-dropdown">
+                            <option value="colour">colour</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Black">Black</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="selection-row">
+                    <div class="item-number">#3</div>
+                    <div class="selection-column">
+                        <label class="selection-label">Size</label>
+                        <select class="size-dropdown">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                        </select>
+                    </div>
+                    <div class="selection-column">
+                        <label class="selection-label">Colour</label>
+                        <select class="color-dropdown">
+                            <option value="colour">colour</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Black">Black</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix">
+            <p id="shipping-text">Free 2 Day Shipping</p>
+            <p id="total">Total: DKK 360.00</p>
+        </div>
+
+        <button onclick="addToCart()">+ Add to Cart</button>
+        
+    </div>
+
+    <script>
+        let selectedPrice = 345;
+        
+        function selectBox(id) {
+            document.querySelectorAll('.box').forEach(box => {
+                box.classList.remove('selected');
+            });
+            document.getElementById('box-' + id).classList.add('selected');
+            
+            document.getElementById('bundle' + id).checked = true;
+            
+            document.querySelectorAll('.content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.getElementById('content-' + id).style.display = 'block';
+            
+            if (id === 1) updateTotal(195);
+            else if (id === 2) updateTotal(345);
+            else if (id === 3) updateTotal(528);
+        }
+        
+        function updateTotal(price) {
+            selectedPrice = price;
+            document.getElementById('total').innerText = `Total: DKK ${(selectedPrice + 15).toFixed(2)}`;
+        }
+        
+        function addToCart() {
+            if (selectedPrice === 0) {
+                alert("Please select a bundle before adding to cart!");
+            } else {
+                alert("Item added to cart! Total: DKK " + (selectedPrice + 15).toFixed(2));
+            }
+        }
+    </script>
+</body>
+</html>
